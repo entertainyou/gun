@@ -655,7 +655,7 @@ handle_common({call, From}, await_up, operational, _) ->
 handle_common({call, From}, await_up, _, StateData=#state{await_up=AwaitUp}) ->
 	{keep_state, StateData#state{await_up=[From|AwaitUp]}};
 handle_common(Type, Event, StateName, StateData) ->
-	logger:error("Unexpected event in state ~p of type ~p:~n~w~n~p~n",
+	logger:error("Unexpected1 event in state ~p of type ~p:~n~w~n~p~n",
 		[StateName, Type, Event, StateData]),
 	keep_state_and_data.
 
