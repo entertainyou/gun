@@ -1009,6 +1009,7 @@ default_retry_fun(Retries, Opts) ->
 
 domain_lookup(_, {retries, Retries, _}, State=#state{host=Host, port=Port, opts=Opts,
 		event_handler=EvHandler, event_handler_state=EvHandlerState0}) ->
+        logger:error("domain lookup ~p", Host),
 	TransOpts = maps:get(tcp_opts, Opts, []),
 	DomainLookupTimeout = maps:get(domain_lookup_timeout, Opts, infinity),
 	DomainLookupEvent = #{
@@ -1033,8 +1034,10 @@ domain_lookup(_, {retries, Retries, _}, State=#state{host=Host, port=Port, opts=
 				{next_event, internal, {retries, Retries, Reason}}}
 	end;
 domain_lookup({call, From}, {stream_info, _}, _) ->
+        logger:error("domain lookup ~p", "not_connected"),
 	{keep_state_and_data, {reply, From, {error, not_connected}}};
 domain_lookup(Type, Event, State) ->
+        logger:error("domain lookup ~p", "??"),
 	handle_common(Type, Event, ?FUNCTION_NAME, State).
 
 connecting(_, {retries, Retries, LookupInfo}, State=#state{opts=Opts,
